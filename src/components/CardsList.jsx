@@ -17,7 +17,7 @@ export default function CardsList() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(
-        `https://api.magicthegathering.io/v1/cards?name=${name}&type=${type}&rarity=${rarity}`
+        `https://api.magicthegathering.io/v1/cards?name=${name}&types=${type}&rarity=${rarity}`
       )
       console.log(res.data.cards)
       setData(res.data)
@@ -33,6 +33,10 @@ export default function CardsList() {
     }
     fetchTypes()
   }, [])
+
+  const multipleTypes = () => {
+    return e => setType(e.target.value)
+  }
 
   if (!data.cards || !types.types) return <div>LOADING ...</div>
 
@@ -53,14 +57,14 @@ export default function CardsList() {
           </div>
           <div className="w-1/3 mt-10 mb-10">
             <select
-              onChange={e => setType(e.target.value)}
+              onChange={multipleTypes()}
               name="types"
               class="form-multiselect block w-full border mt-1"
             >
               <option disabled className="bg-gray-400 text-black-100">
                 Select a type (use ctrl)
               </option>
-              <option value="All">All</option>
+              <option value="">All Types</option>
               {types.types.map(item => (
                 <option value={item}>{item}</option>
               ))}
